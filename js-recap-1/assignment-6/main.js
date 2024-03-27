@@ -1,12 +1,14 @@
 function getInteger(promptMessage) {
   let integer;
-  while (true) {
+  let condition = true;
+  do {
     integer = parseInt(prompt(promptMessage));
     if (!isNaN(integer) && integer > 0) {
+      condition = false;
       return integer;
     }
     alert('Please enter a number above 0.');
-  }
+  } while (condition);
 }
 
 const number = getInteger('Enter a number greater than 0: ');
