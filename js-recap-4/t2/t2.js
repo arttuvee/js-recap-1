@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const restaurants = [
   {
     location: {type: 'Point', coordinates: [25.018456, 60.228982]},
@@ -772,24 +771,39 @@ const restaurants = [
 ];
 
 // your code here
+// JavaScript
+const table = document.querySelector('table');
+const dialog = document.querySelector('dialog');
 
-const map = L.map('map').setView([60.22, 24.95], 13);
+// Assuming restaurants is the array of restaurant data
+restaurants.sort((a, b) => a.name.localeCompare(b.name));
 
-// Set up the OSM tile layer
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-}).addTo(map);
-
-// Add each restaurant as a marker on the map
 restaurants.forEach((restaurant) => {
-  const marker = L.marker(restaurant.location.coordinates.reverse()).addTo(map);
-
-  // Attach a click event to the marker
-  marker.on('click', () => {
-    const info = document.querySelector('#info');
-    info.innerHTML = `
-      <h3>${restaurant.name}</h3>
-      <p>${restaurant.address}</p>
+  const tr = document.createElement('tr');
+  const tdName = document.createElement('td');
+  const tdAddress = document.createElement('td');
+  tdName.textContent = restaurant.name;
+  tdAddress.textContent = restaurant.address;
+  tr.appendChild(tdName);
+  tr.appendChild(tdAddress);
+  tr.addEventListener('click', () => {
+    document
+      .querySelectorAll('.highlight')
+      .forEach((el) => el.classList.remove('highlight'));
+    tr.classList.add('highlight');
+    dialog.innerHTML = `
+      <h2>${restaurant.name}</h2>
+      <p>Address: ${restaurant.address}</p>
+      <p>Postal code: ${restaurant.postalCode}</p>
+      <p>City: ${restaurant.city}</p>
+      <p>Phone: ${restaurant.phone}</p>
+      <p>Company: ${restaurant.company}</p>
+      <button id="close-button">Close</button>
     `;
+    dialog.showModal();
+    document.getElementById('close-button').addEventListener('click', () => {
+      dialog.close();
+    });
   });
+  table.appendChild(tr);
 });

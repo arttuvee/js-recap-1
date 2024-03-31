@@ -28,3 +28,8 @@ const todoList = [
 ];
 
 // add your code here
+const ulElement = document.querySelector('ul');
+todoList.forEach((todo) => {
+  const liElement = `<li id="todo-${todo.id}">${todo.task} - ${todo.completed ? 'Completed' : 'Not Completed'}</li>`;
+  ulElement.insertAdjacentHTML('beforeend', liElement);
+});

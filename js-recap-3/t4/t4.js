@@ -771,3 +771,40 @@ const restaurants = [
 ];
 
 // your code here
+
+// Get the user location
+navigator.geolocation.getCurrentPosition((position) => {
+  const userLocation = {
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude,
+  };
+
+  // Calculate the Euclidean distance for each restaurant
+  restaurants.forEach((restaurant) => {
+    const [restLongitude, restLatitude] = restaurant.location.coordinates;
+    const x = userLocation.latitude - restLatitude;
+    const y = userLocation.longitude - restLongitude;
+    restaurant.distance = Math.sqrt(x * x + y * y);
+  });
+
+  // Sort the restaurants by distance
+  restaurants.sort((a, b) => a.distance - b.distance);
+
+  // Get the table element
+  const table = document.querySelector('table');
+
+  // Add the sorted list of restaurants to the table
+  restaurants.forEach((restaurant) => {
+    const row = document.createElement('tr');
+    const nameCell = document.createElement('td');
+    const addressCell = document.createElement('td');
+
+    nameCell.textContent = restaurant.name;
+    addressCell.textContent = restaurant.address;
+
+    row.appendChild(nameCell);
+    row.appendChild(addressCell);
+
+    table.appendChild(row);
+  });
+});
